@@ -12,6 +12,7 @@ import RecoverPassword from '@/modules/recover-password/recover-password.vue';
 import PrivacyPolicy from '@/modules/privacy-policy/privacy-policy.vue';
 import SubMenu from '@/pages/main-menu/sub-menu/sub-menu.vue';
 import Blank from '@/pages/blank/blank.vue';
+import Todo from '@/pages/todo/Todo.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -34,6 +35,14 @@ const routes: Array<RouteRecordRaw> = [
                 path: 'blank',
                 name: 'Blank',
                 component: Blank,
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'todo',
+                name: 'Todo',
+                component: Todo,
                 meta: {
                     requiresAuth: true
                 }

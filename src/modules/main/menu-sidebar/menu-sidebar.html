@@ -32,27 +32,18 @@
                 role="menu"
                 data-accordion="false"
             >
-                <!-- <li class="nav-item">
+                 <li class="nav-item">
                     <router-link
-                        to="/"
+                        to="/todo"
                         class="nav-link"
                         exact
                         exact-active-class="active"
                     >
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>{{ $t("labels.dashboard") }}</p>
+                        <p>To-Do</p>
                     </router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link
-                        to="/profile"
-                        class="nav-link"
-                        active-class="active"
-                    >
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>{{ $t("labels.profile") }}</p>
-                    </router-link>
-                </li> -->
+                
                 <app-menu-item
                     v-for="item in menu"
                     :menuItem="item"
