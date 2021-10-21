@@ -81,35 +81,9 @@ const routes: Array<RouteRecordRaw> = [
             requiresUnauth: true
         }
     },
-    {
-        path: '/register',
-        name: 'Register',
-        component: Register,
-        meta: {
-            requiresUnauth: true
-        }
-    },
-    {
-        path: '/forgot-password',
-        name: 'ForgotPassword',
-        component: ForgotPassword,
-        meta: {
-            requiresUnauth: true
-        }
-    },
-    {
-        path: '/recover-password',
-        name: 'RecoverPassword',
-        component: RecoverPassword,
-        meta: {
-            requiresUnauth: true
-        }
-    },
-    {
-        path: '/privacy-policy',
-        name: 'RecoverPassword',
-        component: PrivacyPolicy
-    }
+   
+   
+   
 ];
 
 const router = createRouter({
@@ -117,14 +91,5 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
-    if (to.meta.requiresAuth && !store.getters['auth/token']) {
-        next('/login');
-    } else if (to.meta.requiresUnauth && !!store.getters['auth/token']) {
-        next('/');
-    } else {
-        next();
-    }
-});
 
 export default router;
