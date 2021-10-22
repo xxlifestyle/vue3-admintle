@@ -10,7 +10,7 @@
                 <input
                     v-model="loginInput"
                     icon="envelope"
-                    class="mb-3"
+                    class="mb-3 login-input"
                     type="text"
                     placeholder="Login"
                    
@@ -20,7 +20,7 @@
                 <input
                     v-model="passwordInput"
                     icon="lock"
-                    class="mb-3"
+                    class="mb-3 password-input"
                     type="password"
                     placeholder="Password"
                    
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-5">
                         <button
-                            class="btn-primary"
+                            class="btn-primary log-btn"
                             type="submit"
                             block="true"
                             @click="sendLoginRequest"
@@ -40,7 +40,7 @@
                         Login In
                         </button>
                         <button
-                            class="btn-primary"
+                            class="btn-primary reg-btn"
                             type="submit"
                             block="true"
                             @click="sendRegRequest"
