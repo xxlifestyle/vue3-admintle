@@ -1,18 +1,15 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
-import store from '@/store/index';
 
 import Main from '@/modules/main/main.vue';
 import Login from '@/modules/login/login.vue';
-import Register from '@/modules/register/register.vue';
+import firebase from 'firebase/app';
 
 import Dashboard from '@/pages/dashboard/dashboard.vue';
 import Profile from '@/pages/profile/profile.vue';
-import ForgotPassword from '@/modules/forgot-password/forgot-password.vue';
-import RecoverPassword from '@/modules/recover-password/recover-password.vue';
-import PrivacyPolicy from '@/modules/privacy-policy/privacy-policy.vue';
+
 import SubMenu from '@/pages/main-menu/sub-menu/sub-menu.vue';
 import Blank from '@/pages/blank/blank.vue';
-import Todo from '@/pages/todo/Todo.vue'
+import Todo from '@/pages/todo/Todo.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -77,13 +74,8 @@ const routes: Array<RouteRecordRaw> = [
         path: '/login',
         name: 'Login',
         component: Login,
-        meta: {
-            requiresUnauth: true
-        }
-    },
-   
-   
-   
+        meta: {notRequiresAuth: true}
+    }
 ];
 
 const router = createRouter({
@@ -91,5 +83,20 @@ const router = createRouter({
     routes
 });
 
+router.beforeEach((to, from, next) => {
+    const currentUser = window.localStorage.getItem('token');
+    const requieAuth = to.matched.some((todo) => todo.meta.requiresAuth);
+    const notRequieAuth = to.matched.some((todo) => todo.meta.notRequiresAuth);
+
+    if (notRequieAuth && currentUser) {
+        next('/');
+    }
+
+    if (requieAuth && !currentUser) {
+        next('/login');
+    } else {
+        next();
+    }
+});
 
 export default router;

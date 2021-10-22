@@ -48,6 +48,7 @@ export default {
                 )
                 .then((response) => {
                     window.localStorage.setItem('token', response.data.token);
+                    this.$router.push({path: '/'});
                     console.log(window.localStorage.getItem('token'));
                 });
         }
