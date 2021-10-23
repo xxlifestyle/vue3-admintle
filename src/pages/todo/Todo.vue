@@ -21,25 +21,33 @@
         <div class="card">
             
             <div class="card-body">
-            <input @keyup.enter="pushListToTodoPosts" v-model='inputListHolder' placeholder="Enter your list" class='col-sm-9'>
-            <button @click="pushListToTodoPosts" class='col-sm-1'>Create list</button>
+            <div class='list-form'>
+            <input @keyup.enter="pushListToTodoPosts" v-model='inputListHolder' placeholder="Enter your list" class='col-sm-9 list-input'>
+            <button @click="pushListToTodoPosts" class='col-sm-1 list-input_button'>Create list</button>
+            </div>
             <ul class=" todo-list">
-                <li class='todo-list_item' v-for="(post, index) in todoPosts"><span>{{post.name }}</span>
-                    <button @click="clearTodoPosts(index,post.id)" class="col-sm-1 clear-list_item__btn">Delete</button>
+                <li class='todo-list_item' v-for="(post, index) in todoPosts">
+                    <div class='todo-list_item__content'>
+                    <span  class="post-name">{{post.name }}</span>
+                    <button @click="clearTodoPosts(index,post.id)" class=" clear-list_btn">Delete</button>
+                    </div>
                     <ul v-if="todoPosts.length !== 0" class=" task-list">
-                        <li class='task-list_item '  v-for="(task, index) in taskPosts"><span>{{ task.name }}</span>
-                            <button @click="clearTodoTasks(index,task.id)" class="col-sm-1 clear-list_item__btn">Delete</button>
-                
-                
+                        <li class='task-list_item '  v-for="(task, index) in taskPosts">
+                            <div class='task-list_item__content'>
+                            <span>{{ task.name }}</span>
+                            <img src='@/assets/crossflat.svg' @click="clearTodoTasks(index,task.id)" class=" clear-list_item__btn"/>
+                            </div>
                         </li> 
-                <input v-model='inputTaskHolder' placeholder="Enter your task" class=' task-input col-sm-2'/> 
-                <button @click="pushListToTaskPosts(post.id)" class='col-sm-1'>Create task</button>
+                        <div class="new-task_form">
+                            <input v-model='inputTaskHolder' placeholder="Enter your task" class=' task-input'/> 
+                            <button @click="pushListToTaskPosts(post.id)" class=''>Create task</button>
+                        </div>
                     </ul>
                 </li> 
                     
             </ul>
         </div>
-            <div class="card-footer">Footer</div>
+            <div class="card-footer"></div>
         </div>
     </div>
 </section>
@@ -166,7 +174,6 @@ export default {
                             name: response.data[i].name,
                             id: response.data[i].id
                         });
-                        console.log(response.data);
                     }
                 });
         }
@@ -174,8 +181,6 @@ export default {
     beforeMount() {
         this.renderPosts();
         this.renderTasks();
-        console.log(this.todoPosts);
-        console.log(this.renderTasks);
     }
 };
 </script>
@@ -187,11 +192,28 @@ export default {
     justify-content: space-between;
 }
 
+.todo-list_item {
+    display: flex;
+    flex-direction: column;
+}
+.post-name {
+    font-size: 24px;
+    font-weight: 700;
+}
+.todo-list_item__content {
+    display: flex;
+    flex-direction: row;
+    widows: 100%;
+    justify-content: space-between;
+}
 .task-list li {
     margin-top: 15px;
     display: flex;
     width: 83%;
     justify-content: space-between;
+    flex-direction: column;
+    border: 1px double gray;
+    padding: 5px;
 }
 .clear-list_btn {
     margin-left: 15px;
@@ -200,10 +222,40 @@ export default {
     border: 1px solid white;
 }
 
+.task-list_item {
+    width: 100%;
+}
+
+.task-list_item span {
+    margin-left: 5px;
+}
+
+.task-input {
+    margin-right: 10px;
+}
+
+.task-list_item__content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.new-task_form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+.new-task_form button {
+    height: 30px;
+    width: 100px;
+}
+
 .clear-list_item__btn {
-    background-color: red;
     color: white;
     border: 1px solid white;
+    height: 30px;
 }
 
 .completed {
@@ -211,6 +263,21 @@ export default {
     font-weight: 700;
 }
 .task-input {
-    margin-top: 15px;
+    width: 75.3%;
+    border: 1px solid black;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+.list-form {
+    width: 100%;
+}
+.list-input {
+    height: 30px;
+}
+.list-input_button {
+    height: 30px;
+    margin-left: 10px;
 }
 </style>
