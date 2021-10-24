@@ -28,11 +28,11 @@
             <ul class=" todo-list">
                 <li class='todo-list_item' v-for="(post, index) in todoPosts">
                     <div class='todo-list_item__content'>
-                    <span  class="post-name">{{post.name }}</span>
+                    <span  class="post-name">{{post.name }}</span>  
                     <button @click="clearTodoPosts(index,post.id)" class=" clear-list_btn">Delete</button>
                     </div>
                     <ul v-if="todoPosts.length !== 0" class=" task-list">
-                        <li class='task-list_item '  v-for="(task, index) in taskPosts">
+                        <li class='task-list_item '  v-for="(task, index) in todoPosts[index].todo_list">
                             <div class='task-list_item__content'>
                             <span>{{ task.name }}</span>
                             <img src='@/assets/crossflat.svg' @click="clearTodoTasks(index,task.id)" class=" clear-list_item__btn"/>
@@ -40,7 +40,7 @@
                         </li> 
                         <div class="new-task_form">
                             <input v-model='inputTaskHolder' placeholder="Enter your task" class=' task-input'/> 
-                            <button @click="pushListToTaskPosts(post.id)" class=''>Create task</button>
+                            <button @click="pushListToTaskPosts(post.id,index)" class=''>Create task</button>
                         </div>
                     </ul>
                 </li> 
@@ -67,7 +67,7 @@ export default {
         };
     },
     methods: {
-        pushListToTaskPosts(id) {
+        pushListToTaskPosts(id, index) {
             if (this.inputTaskHolder === null || this.inputTaskHolder === '') {
                 return;
             }
@@ -86,10 +86,7 @@ export default {
                     }
                 )
                 .then((response) => {
-                    this.taskPosts.push({
-                        name: response.data.name,
-                        id: response.data.id
-                    });
+                    setTimeout(this.renderPosts, 500);
                 });
             this.inputTaskHolder = '';
         },
@@ -101,7 +98,7 @@ export default {
                 }
             });
 
-            this.taskPosts.splice(index, 1);
+            setTimeout(this.renderPosts, 500);
         },
 
         pushListToTodoPosts() {
@@ -151,36 +148,31 @@ export default {
                 })
                 .then((response) => {
                     for (let i = 0; i < response.data.length; i++) {
-                        this.todoPosts.push({
-                            name: response.data[i].name,
-                            id: response.data[i].id
-                        });
-                        console.log(response.data);
-                    }
-                });
-        },
-        renderTasks() {
-            this.todoPosts = [];
-            axios
-                .get('http://dev1.itpw.ru:8003/todo/tasks/', {
-                    headers: {
-                        Authorization:
-                            'Bearer ' + window.localStorage.getItem('token')
-                    }
-                })
-                .then((response) => {
-                    for (let i = 0; i < response.data.length; i++) {
-                        this.taskPosts.push({
-                            name: response.data[i].name,
-                            id: response.data[i].id
-                        });
+                        axios
+                            .get(
+                                'http://dev1.itpw.ru:8003/todo/tasks/?todo_list=' +
+                                    response.data[i].id,
+                                {
+                                    headers: {
+                                        Authorization:
+                                            'Bearer ' +
+                                            window.localStorage.getItem('token')
+                                    }
+                                }
+                            )
+                            .then((resp) => {
+                                this.todoPosts.push({
+                                    name: response.data[i].name,
+                                    id: response.data[i].id,
+                                    todo_list: resp.data
+                                });
+                            });
                     }
                 });
         }
     },
-    beforeMount() {
-        this.renderPosts();
-        this.renderTasks();
+    mounted() {
+        setTimeout(this.renderPosts, 500);
     }
 };
 </script>
@@ -220,6 +212,7 @@ export default {
     background-color: red;
     color: white;
     border: 1px solid white;
+    width: 80px;
 }
 
 .task-list_item {
